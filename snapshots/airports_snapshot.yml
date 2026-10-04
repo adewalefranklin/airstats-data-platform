@@ -1,0 +1,14 @@
+snapshots:
+  - name: scd_airports
+    relation: ref('airports')
+    config:
+      unique_key: airport_id
+      strategy: check
+      check_cols:
+        - airport_name
+        - airport_type
+        - country_code
+        - region_code
+        - municipality
+        - scheduled_service
+      hard_deletes: invalidate

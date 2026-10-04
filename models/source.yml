@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: airstats_raw
+    database: AIRSTATS_RAW
+    schema: RAW
+
+    tables:
+      - name: airports
+      - name: runways
+      - name: airport_frequencies
+      - name: airport_comments
+      - name: countries
+      - name: regions
+      - name: navaids
