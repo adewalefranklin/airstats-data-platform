@@ -2,7 +2,7 @@ airstats_dbt:
   outputs:
     dev:
       type: snowflake
-      account: KWBQOWH-XO35273
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
       user: DBT_USER
       password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
       role: DBT_ROLE
