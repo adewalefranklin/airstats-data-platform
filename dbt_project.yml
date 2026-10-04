@@ -43,7 +43,10 @@ models:
       +materialized: table
       +schema: MARTS
 
-
 snapshots:
   airstats_dbt:
     +schema: SNAPSHOTS
+
+    incremental:
+      +materialized: incremental
+      +schema: INTERMEDIATE
