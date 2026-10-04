@@ -32,21 +32,23 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   airstats_dbt:
     staging:
-      +materialized: view
       +schema: STAGING
+      +materialized: view
 
     intermediate:
-      +materialized: view
       +schema: INTERMEDIATE
+      +materialized: view
+
+    incremental:
+      +schema: INTERMEDIATE
+      +materialized: incremental
 
     marts:
-      +materialized: table
       +schema: MARTS
+      +materialized: table
 
 snapshots:
   airstats_dbt:
     +schema: SNAPSHOTS
 
-    incremental:
-      +materialized: incremental
-      +schema: INTERMEDIATE
+asset-paths: ["_screenshots"]

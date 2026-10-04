@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: int_airport_runway_stats
+    description: >
+      Airport-level intermediate model combining airport, country,
+      and runway information for reusable downstream analysis.
+
+    columns:
+      - name: airport_id
+        description: Unique airport identifier.
+
+      - name: airport_ident
+        description: Airport identifier used across OurAirports datasets.
+
+      - name: country_code
+        description: ISO country code.
+
+      - name: country_name
+        description: Country name.
+
+      - name: runway_count
+        description: Number of runways associated with the airport.

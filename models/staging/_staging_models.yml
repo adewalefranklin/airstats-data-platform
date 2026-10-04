@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: airports
+    description: Cleaned and standardized airport records from OurAirports.
+
+    columns:
+      - name: airport_id
+        description: Unique internal identifier for the airport.
+        tests:
+          - not_null
+          - unique
+
+      - name: airport_ident
+        description: Airport identifier used for interoperability across OurAirports datasets.
+        tests:
+          - not_null
+          - unique
+
+      - name: country_code
+        description: ISO country code associated with the airport.
+        tests:
+          - not_null
+
+      - name: region_code
+        description: ISO region code associated with the airport.
+        tests:
+          - not_null
+
+  - name: runways
+    description: Cleaned runway records linked to airports.
+
+    columns:
+      - name: runway_id
+        description: Unique identifier for the runway record.
+        tests:
+          - not_null
+          - unique
+
+      - name: airport_id
+        description: Identifier of the airport associated with the runway.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('airports')
+                field: airport_id

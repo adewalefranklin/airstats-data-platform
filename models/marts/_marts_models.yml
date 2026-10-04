@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: mart_country_airport_stats
+    description: Country-level summary of airport and runway infrastructure.
+
+    config:
+      contract:
+        enforced: true
+
+    columns:
+        - name: country_code
+          data_type: varchar
+
+        - name: country_name
+          data_type: varchar
+
+        - name: airport_count
+          data_type: number
+
+        - name: total_runway_count
+          data_type: number
+
+        - name: avg_runways_per_airport
+          data_type: number
+
+        - name: max_runways_at_single_airport
+          data_type: number
