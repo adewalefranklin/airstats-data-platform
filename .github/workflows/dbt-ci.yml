@@ -26,7 +26,7 @@ jobs:
       - name: Create dbt profile
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          DBT_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_SNOWFLAKE_PASSWORD }}
+          DBT_CI_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_CI_SNOWFLAKE_PASSWORD }}
         run: |
           mkdir -p ~/.dbt
 
@@ -38,11 +38,11 @@ jobs:
               dev:
                 type: snowflake
                 account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
-                user: DBT_USER
-                password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
-                role: DBT_ROLE
+                user: DBT_CI_USER
+                password: "{{ env_var('DBT_CI_SNOWFLAKE_PASSWORD') }}"
+                role: DBT_CI_ROLE
                 warehouse: AIRSTATS_DBT_WH
-                database: AIRSTATS_DEV
+                database: AIRSTATS_CI
                 schema: STAGING
                 threads: 4
           EOF
@@ -50,7 +50,7 @@ jobs:
       - name: Test dbt connection
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          DBT_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_SNOWFLAKE_PASSWORD }}
+          DBT_CI_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_CI_SNOWFLAKE_PASSWORD }}
         run: |
           dbt debug
 
@@ -61,20 +61,20 @@ jobs:
       - name: Parse dbt project
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          DBT_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_SNOWFLAKE_PASSWORD }}
+          DBT_CI_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_CI_SNOWFLAKE_PASSWORD }}
         run: |
           dbt parse
 
       - name: Compile dbt project
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          DBT_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_SNOWFLAKE_PASSWORD }}
+          DBT_CI_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_CI_SNOWFLAKE_PASSWORD }}
         run: |
           dbt compile
 
       - name: Build dbt project
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          DBT_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_SNOWFLAKE_PASSWORD }}
+          DBT_CI_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_CI_SNOWFLAKE_PASSWORD }}
         run: |
           dbt build
