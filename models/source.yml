@@ -6,10 +6,10 @@ sources:
     schema: RAW
 
     tables:
-      - name: airports
-      - name: runways
-      - name: airport_frequencies
-      - name: airport_comments
-      - name: countries
-      - name: regions
-      - name: navaids
+      - name: airports -- source table for airports
+      - name: runways -- source table for runways
+      - name: airport_frequencies -- source table for airport frequencies
+      - name: airport_comments -- source table for airport comments
+      - name: countries -- source table for countries
+      - name: regions -- source table for regions
+      - name: navaids -- source table for navaids
