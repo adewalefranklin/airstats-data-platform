@@ -1,0 +1,66 @@
+name: dbt CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  dbt-prod-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dbt
+        run: |
+          python -m pip install --upgrade pip
+          pip install dbt-snowflake==1.12.1
+
+      - name: Create production dbt profile
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          DBT_PROD_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_PROD_SNOWFLAKE_PASSWORD }}
+        run: |
+          mkdir -p ~/.dbt
+
+          cat > ~/.dbt/profiles.yml <<'EOF'
+          airstats_dbt:
+            target: prod
+
+            outputs:
+              prod:
+                type: snowflake
+                account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+                user: DBT_PROD_USER
+                password: "{{ env_var('DBT_PROD_SNOWFLAKE_PASSWORD') }}"
+                role: DBT_PROD_ROLE
+                warehouse: AIRSTATS_DBT_WH
+                database: AIRSTATS_PROD
+                schema: STAGING
+                threads: 4
+          EOF
+
+      - name: Install dbt dependencies
+        run: |
+          dbt deps
+
+      - name: Test production connection
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          DBT_PROD_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_PROD_SNOWFLAKE_PASSWORD }}
+        run: |
+          dbt debug --target prod
+
+      - name: Deploy dbt project to production
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          DBT_PROD_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_PROD_SNOWFLAKE_PASSWORD }}
+        run: |
+          dbt build --target prod
