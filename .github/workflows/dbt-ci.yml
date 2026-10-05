@@ -58,6 +58,18 @@ jobs:
         run: |
           dbt deps
 
+      - name: Create main branch state
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          DBT_CI_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_CI_SNOWFLAKE_PASSWORD }}
+        run: |
+          git fetch origin main
+          git worktree add ../main-state origin/main
+
+          cd ../main-state
+          dbt deps
+          dbt parse --target-path ../state
+
       - name: Parse dbt project
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
@@ -65,16 +77,16 @@ jobs:
         run: |
           dbt parse
 
-      - name: Compile dbt project
-        env:
-          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          DBT_CI_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_CI_SNOWFLAKE_PASSWORD }}
-        run: |
-          dbt compile
+    #   - name: Compile dbt project
+    #     env:
+    #       SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+    #       DBT_CI_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_CI_SNOWFLAKE_PASSWORD }}
+    #     run: |
+    #       dbt compile
 
-      - name: Build dbt project
+      - name: Slim CI build
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           DBT_CI_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_CI_SNOWFLAKE_PASSWORD }}
         run: |
-          dbt build
+          dbt build --select "state:modified+" --defer --state ../state

@@ -4,7 +4,7 @@ SELECT
     a.airport_name,
     a.country_code,
     c.country_name,
-    COUNT(r.runway_id) AS runway_count
+    COUNT(r.runway_id) AS runway_count --total number of runways for each airport
 FROM {{ ref('airports') }} a
 
 LEFT JOIN {{ ref('countries') }} c
