@@ -3,7 +3,7 @@ snapshots:
     relation: ref('airports')
     config:
       unique_key: airport_id
-      strategy: check
+      strategy: check -- one call also use "all" argument to check all columns for changes, but this is not cost effective for large tables. Use "check" to check only the columns specified in the check_cols argument.
       check_cols:
         - airport_name
         - airport_type
