@@ -1,0 +1,14 @@
+airstats_dbt:
+  target: prod
+
+  outputs:
+    prod:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: DBT_PROD_USER
+      password: "{{ env_var('DBT_PROD_SNOWFLAKE_PASSWORD') }}"
+      role: DBT_PROD_ROLE
+      warehouse: AIRSTATS_DBT_WH
+      database: AIRSTATS_PROD
+      schema: STAGING
+      threads: 4
