@@ -469,6 +469,7 @@ Files such as local dbt profiles and `.env` files are excluded using `.gitignore
 
 AirStats demonstrates an end-to-end modern analytics platform combining:
 
+
 ```text
 Python
 AWS
@@ -478,5 +479,6 @@ Airflow / MWAA
 GitHub Actions
 Power BI
 ```
+
 
 The project covers the complete lifecycle from raw source ingestion through transformation, automated testing, CI/CD, orchestration, production deployment, and business intelligence consumption.
